@@ -42,6 +42,35 @@ début
 	ecrireEcran(tete);
 fin
 
+fonction decToBin(entF d: int) délivre entier c'est
+début
+
+fin
+
+fonction decToHexa(entF d: int) délivre chaine(MAX_HEXA) c'est
+début
+
+fin
+
+fonction binToDec(entF b: int) délivre entier c'est
+début
+
+fin
+
+fonction binToHexa(entF b: int) délivre chaine(MAX_HEXA) c'est
+début
+
+fin
+
+fonction hexaToDec(entF h: chaine(MAX_HEXA)) c'est
+début
+
+fin
+
+fonction hexaToBin(entF h: chaine(MAX_HEXA)) c'est
+début
+
+fin
 
 main c'est
 début 

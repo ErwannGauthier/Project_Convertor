@@ -1,0 +1,49 @@
+constante entier MAX_TAB_BIN := 19; // car tableau en pseudo-code : 1..MAX, alors qu'en C : 0..MAX-1
+constante entier MAX_TAB_HEXA := 4;
+constante entier MAX_TAB_DEC := 6;
+
+type tabBin = tableau[1..MAX_TAB_BIN] de caractere;
+type tabHexa = tableau[1..MAX_TAB_HEXA] de caractere;
+type tabDec = tableau[1..MAX_TAB_DEC] de caractere;
+
+type tableau = structure
+début
+	t_bin: tabBin;
+	nbBin: int;
+
+	t_hexa: tabHexa;
+	nbHexa: int;
+
+	t_dec: tabDec;
+	nbDec: int;
+fin
+
+procédure initTab(sortF tab: tableau) c'est
+début
+	tab.nbBin := 0;
+	tab.nbHexa := 0;
+	tab.nbDec := 0;
+fin
+
+procédure saisiBin(entF/sortF tab: tableau) c'est
+début
+	saisi: caractere;
+
+	lireClavier(saisi);
+
+	// Vérifie que le premier caractère vaut 0 ou 1
+	si ((saisi==0) OU (saisi==1)) alors
+		tab.nbBin++;
+	finSi
+
+	tantque ((tab.nbBin <= MAX_SAISI_BIN) ET ((saisi==0) OU (saisi==1))) faire
+		tab.t_bin[tab.nbBin] := saisi;
+		tab.nbBin++;
+		lireClavier(saisi);
+	finFaire
+
+	// Vérifie qu'il y a au moins un caractère dans le tableau, sinon ERREUR
+	si (tab.nbBin==0) alors
+		ecrireEcran("Erreur: un nombre binaire est constitué exclusivement de 0 et de 1.");
+	finSi
+fin

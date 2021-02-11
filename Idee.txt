@@ -10,3 +10,9 @@
 7 - Fonction Hexa_To_Bin
 8 - Fonction Hexa_To_Dec
 9 - Fonction affichRes
+
+
+
+
+Convertir chaine de caractere en entier:
+https://koor.fr/C/cstdlib/atoi.wp
