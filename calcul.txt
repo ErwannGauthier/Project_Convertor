@@ -1,0 +1,44 @@
+procédure binToDec(entF/sortF tab : s_tab) c'est
+début
+	somme, i, j: entier;
+	somme := 0;
+
+	pour i de tab.nbBin à 1 faire
+		pour j de 0 à (tab.nbBin - 1) faire
+			// ici on admet que atoi() converti un caractère en entier
+			somme := somme + atoi(tab.t_bin[i]) * 2^j; 
+		finFaire
+	finFaire
+	
+	tab.resDec := somme;
+fin
+
+procédure binToHexa(entF/sortF tab: s_tab) c'est
+début
+	nbChiffre: entier;
+
+	// calcul le nombre de chiffre hexadecimaux nécessaire
+	nbChiffre := (tab.nbBin - (tab.nbBin % 4)) / 4 
+	si ((tab.nbBin % 4) != 0) alors
+		nbChiffre++;
+	finSi
+
+	nbGrTour, nbPeTour, calc, i: entier;
+	nbGrTour := 1;
+	nbPeTour := 1;
+
+	tantque (nbGrTour <= nbChiffre) faire
+		calc := 0;
+		i := 0;
+
+		// 1ere condition vérifie qu'on ne fait pas de somme en trop pour le dernier chiffre hexa
+		tantque ((nbPeTour <= tab.nbBin) ET (i <= 3)) faire
+			calc := calc + 2^i;
+			nbPeTour++;
+			i++;
+		finFaire
+
+		tab.t_hexa[nbGrTour] := calc;
+		nbGrTour++;
+	finFaire
+fin
