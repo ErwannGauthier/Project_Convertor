@@ -1,10 +1,10 @@
 constante entier MAX_TAB_BIN := 19; // car tableau en pseudo-code : 1..MAX, alors qu'en C : 0..MAX-1
 constante entier MAX_TAB_HEXA := 4;
-constante entier MAX_TAB_DEC := 6; // Chiffre max : 1 048 575, (FFFFF)16, (1111111111111111111)2
+constante entier MAX_TAB_ENT := 6; // Chiffre max : 1 048 575, (FFFFF)16, (1111111111111111111)2
 
 type tabBin = tableau[1..MAX_TAB_BIN] de caractere;
 type tabHexa = tableau[1..MAX_TAB_HEXA] de caractere;
-type tabDec = tableau[1..MAX_TAB_DEC] de caractere;
+type tabEnt = tableau[1..MAX_TAB_ENT] de caractere;
 
 type s_tab = structure
 début
@@ -14,16 +14,16 @@ début
 	t_hexa: tabHexa;
 	nbHexa: entier;
 
-	t_dec: tabDec;
-	nbDec: entier;
-	resDec : entier;
+	t_ent: tabEnt;
+	nbEnt: entier;
+	resEnt : entier;
 fin
 
 procédure initTab(sortF tab: s_tab) c'est
 début
 	tab.nbBin := 0;
 	tab.nbHexa := 0;
-	tab.nbDec := 0;
+	tab.nbEnt := 0;
 fin
 
 procédure saisiBin(entF/sortF tab: s_tab) c'est
@@ -37,13 +37,35 @@ début
 		ecrireEcran("Erreur: un nombre binaire est constitué exclusivement de 0 et de 1.");
 		ecrireEcran("Entrer un nombre binaire :");
 		lireClavier(saisi);
-	jusqu'à ((saisi==0) OU (saisi==1))
+	jusqu'à ((saisi=='0') OU (saisi=='1'))
 
 	tab.nbBin++;
 
 	tantque ((tab.nbBin <= MAX_SAISI_BIN) ET ((saisi=='0') OU (saisi=='1'))) faire
 		tab.t_bin[tab.nbBin] := saisi;
 		tab.nbBin++;
+		lireClavier(saisi);
+	finFaire
+fin
+
+procédure saisiEntier(entF/sortF tab: s_tab) c'est
+début
+	saisi: caractere;
+	e : ensemble;
+	e := {0, 1, 2, 3, 4, 5, 6, 7, 8, 9}
+	
+	lireClavier(saisi);
+	répéter
+		ecrireEcran("Erreur: un nombre est constitué exclusivement de chiffre.");
+		ecrireEcran("Entrer un chiffre :");
+		lireClavier(saisi);
+	jusqu'à saisi dans e
+
+	tab.nbEnt++;
+
+	tantque ((tab.nbEnt <= MAX_SAISI_ENT) ET (saisi dans e)) faire
+		tab.t_ent[tab.nbEnt] := saisi;
+		tab.nbEnt++;
 		lireClavier(saisi);
 	finFaire
 fin

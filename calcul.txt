@@ -1,16 +1,18 @@
-procédure binToDec(entF/sortF tab : s_tab) c'est
+procédure binToEnt(entF/sortF tab : s_tab) c'est
 début
 	somme, i, j: entier;
 	somme := 0;
 
+	// Parcours du tableau à l'envers car un binaire se lit de droite à gauche
 	pour i de tab.nbBin à 1 faire
+		// j de 0 à tab.nbBin - 1 car puissance de 2 commence à 0
 		pour j de 0 à (tab.nbBin - 1) faire
 			// ici on admet que atoi() converti un caractère en entier
 			somme := somme + atoi(tab.t_bin[i]) * 2^j; 
 		finFaire
 	finFaire
 	
-	tab.resDec := somme;
+	tab.resEnt := somme;
 fin
 
 procédure binToHexa(entF/sortF tab: s_tab) c'est
@@ -26,16 +28,18 @@ début
 	nbGrTour, nbPeTour, calc, i: entier;
 	nbGrTour := 1;
 	nbPeTour := 1;
+	j := tab.nbBin;
 
 	tantque (nbGrTour <= nbChiffre) faire
 		calc := 0;
 		i := 0;
 
 		// 1ere condition vérifie qu'on ne fait pas de somme en trop pour le dernier chiffre hexa
-		tantque ((nbPeTour <= tab.nbBin) ET (i <= 3)) faire
-			calc := calc + 2^i;
+		tantque ((nbPeTour <= tab.nbBin) ET (i <= 3) ET (j >= 1)) faire
+			calc := calc + tab.t_bin[j] * 2^i;
 			nbPeTour++;
 			i++;
+			j--;
 		finFaire
 
 		tab.t_hexa[nbGrTour] := calc;

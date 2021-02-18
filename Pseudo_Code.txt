@@ -14,7 +14,7 @@ début
 	ecrireEcran(espace);
 	ecrireEcran(espace);
 	ecrireEcran("|	De quel type est votre chiffre ?                |");
-	ecrireEcran("|		1 : Décimal                             |");
+	ecrireEcran("|		1 : Entier                              |");
 	ecrireEcran("|		2 : Binaire                             |");
 	ecrireEcran("|          3 : Hexadecimal                         |");
 	ecrireEcran(espace);
@@ -22,7 +22,7 @@ début
 	ecrireEcran(tete);
 fin
 
-procédure affichRes(entF dec: entier, entF bin: entier, entF hexa: chaine(100)) c'est
+procédure affichRes(entF ent: entier, entF bin: entier, entF hexa: chaine(100)) c'est
 début
 	tete, espace : chaine(53);
 	tete := "+--------------------------------------------------+";
@@ -32,7 +32,7 @@ début
 	ecrireEcran(tete);
 	ecrireEcran(espace);
 	ecrireEcran(espace);
-	ecrireEcran("|	Décimal :", dec);
+	ecrireEcran("|	Décimal :", ent);
 	ecrireEcran(espace);
 	ecrireEcran("|	Binaire :", bin);
 	ecrireEcran(espace);
@@ -42,17 +42,17 @@ début
 	ecrireEcran(tete);
 fin
 
-fonction decToBin(entF d: int) délivre entier c'est
+fonction entToBin(entF d: int) délivre entier c'est
 début
 
 fin
 
-fonction decToHexa(entF d: int) délivre chaine(MAX_HEXA) c'est
+fonction entToHexa(entF d: int) délivre chaine(MAX_HEXA) c'est
 début
 
 fin
 
-fonction binToDec(entF b: int) délivre entier c'est
+fonction binToEnt(entF b: int) délivre entier c'est
 début
 
 fin
@@ -62,7 +62,7 @@ début
 
 fin
 
-fonction hexaToDec(entF h: chaine(MAX_HEXA)) c'est
+fonction hexaToEnt(entF h: chaine(MAX_HEXA)) c'est
 début
 
 fin
@@ -75,7 +75,7 @@ fin
 main c'est
 début 
 	resSwitch: entier;
-	decimal, binaire: entier;
+	ent, binaire: entier;
 	hexadec: chaine(MAX_HEXA);
 
 	répéter
@@ -85,24 +85,24 @@ début
 
 	selon resSwitch faire
 		cas 1:	ecrireEcran("Entrer le chiffre décimal :");
-			lireClavier(decimal);
-			binaire := decToBin(entE decimal);
-			hexadec := decToHexa(entE decimal);
+			lireClavier(ent);
+			binaire := entToBin(entE decimal);
+			hexadec := entToHexa(entE decimal);
 
 		cas 2:	ecrireEcran("Entrer le chiffre binaire :");
 			lireClavier(binaire);
-			decimal := binToDec(entE binaire);
+			decimal := binToEnt(entE binaire);
 			hexadec := binToHexa(ente binaire);
 
 		cas 3:	ecrireEcran("Entrer le chiffre hexadécimal :");
 			lireClavier(hexadec);
-			decimal := hexaToDec(entE hexadec);
+			decimal := hexaToEnt(entE hexadec);
 			binaire := hexaToBin(entE hexadec);
 
 		default : ecrireEcran("Erreur : Veuillez rentrer 1, 2 ou 3");
 	finSelon
 
-	affichRes(entE decimal, entE binaire, entE hexadec);
+	affichRes(entE ent, entE binaire, entE hexadec);
 fin
 
 	
