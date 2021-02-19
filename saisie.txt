@@ -51,21 +51,43 @@ fin
 procédure saisiEntier(entF/sortF tab: s_tab) c'est
 début
 	saisi: caractere;
-	e : ensemble;
-	e := {0, 1, 2, 3, 4, 5, 6, 7, 8, 9}
 	
 	lireClavier(saisi);
+
 	répéter
-		ecrireEcran("Erreur: un nombre est constitué exclusivement de chiffre.");
-		ecrireEcran("Entrer un chiffre :");
+		ecrireEcran("Erreur: un nombre est exclusivement constitué de chiffre.");
+		ecrireEcran("Entrer un nombre :");
 		lireClavier(saisi);
-	jusqu'à saisi dans e
+	jusqu'à ((saisi >= 0) ET (saisi <= 9))
 
 	tab.nbEnt++;
 
-	tantque ((tab.nbEnt <= MAX_SAISI_ENT) ET (saisi dans e)) faire
+	tantque ((tab.nbEnt <= MAX_SAISI_ENT) ET ((saisi >= 0) ET (saisi <= 9))) faire
 		tab.t_ent[tab.nbEnt] := saisi;
 		tab.nbEnt++;
+		lireClavier(saisi);
+	finFaire
+fin
+
+procédure saisiHexa(entF/sortF tab: s_tab) c'est
+début
+	saisi: caractere;
+	e: ensemble;
+	e := {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, A, B, C, D, E, F, a, b, c, d, e, f};
+
+	lireClavier(saisi);
+
+	répéter
+		ecrireEcran("Erreur: un nombre hexadécimal est constitué de chiffre et/ou des lettres A à F.");
+		ecrireEcran("Entrer un nombre hexadécimal :");
+		lireClavier(saisi);
+	jusqu'à (saisi dans e)
+
+	tab.nbHexa++;
+
+	tantque ((tab.nbHexa <= MAX_SAISI_HEXA) ET (saisi dans e)) faire
+		tab.t_hexa[tab.nbHexa] := saisi;
+		tab.nbHexa++;
 		lireClavier(saisi);
 	finFaire
 fin
