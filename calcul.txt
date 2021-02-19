@@ -50,7 +50,25 @@ fin
 
 procédure entToBin(entF/sortF tab: s_tab) c'est
 début
-	
+	i, dividende, diviseur, quotient, reste: entier;
+	i := 1;
+
+	dividende := tab.resEntier;
+	diviseur := 2;
+	reste := dividende % diviseur;
+	quotient := (dividende - reste) / diviseur;
+
+	tab.t_bin[i] := quotient;
+
+	tantque (quotient != 0) faire
+		i++;
+		dividende := reste;
+		reste := dividende % diviseur;
+		quotient := (dividende - reste) / diviseur;
+		tab.t_bin[i] := quotient;
+	finFaire
+
+	tab.nbBin := i;
 fin
 
 procédure entToHexa(entF/sortF tab: s_tab) c'est
