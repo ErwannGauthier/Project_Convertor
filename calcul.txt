@@ -62,10 +62,10 @@ début
 
 	tantque (quotient != 0) faire
 		i++;
-		dividende := reste;
+		dividende := quotient;
 		reste := dividende % diviseur;
 		quotient := (dividende - reste) / diviseur;
-		tab.t_bin[i] := quotient;
+		tab.t_bin[i] := reste;
 	finFaire
 
 	tab.nbBin := i;
