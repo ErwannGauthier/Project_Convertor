@@ -36,7 +36,7 @@ début
 
 		// 1ere condition vérifie qu'on ne fait pas de somme en trop pour le dernier chiffre hexa
 		tantque ((nbPeTour <= tab.nbBin) ET (i <= 3) ET (j >= 1)) faire
-			calc := calc + tab.t_bin[j] * 2^i;
+			calc := calc + atoi(tab.t_bin[j]) * 2^i;
 			nbPeTour++;
 			i++;
 			j--;
@@ -45,4 +45,33 @@ début
 		tab.t_hexa[nbGrTour] := calc;
 		nbGrTour++;
 	finFaire
+	tab.nbHexa := nbGrTour;
+fin
+
+procédure entToBin(entF/sortF tab: s_tab) c'est
+début
+	
+fin
+
+procédure entToHexa(entF/sortF tab: s_tab) c'est
+début
+	i, dividende, diviseur, quotient, reste: entier;
+	i := 1;
+
+	dividende := tab.resEntier;
+	diviseur := 16;
+	reste := dividende % diviseur;
+	quotient := (dividende - reste) / diviseur;
+
+	tab.t_hexa[i] := quotient;
+
+	tantque (quotient != 0) faire
+		i++;
+		dividende := reste;
+		reste := dividende % diviseur;
+		quotient := (dividende - reste) / diviseur;
+		tab.t_hexa[i] := quotient;
+	finFaire
+
+	tab.nbHexa := i;
 fin

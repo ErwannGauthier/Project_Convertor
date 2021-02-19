@@ -51,6 +51,7 @@ fin
 procédure saisiEntier(entF/sortF tab: s_tab) c'est
 début
 	saisi: caractere;
+	i, j: entier;
 	
 	lireClavier(saisi);
 
@@ -66,6 +67,15 @@ début
 		tab.t_ent[tab.nbEnt] := saisi;
 		tab.nbEnt++;
 		lireClavier(saisi);
+	finFaire
+
+	i := 0;
+	j := tab.nbEnt;
+	tab.resEnt := 0;
+	tantque (((i+1) <= tab.nbEnt) ET (j >= 1)) faire
+		tab.resEnt := tab.resEnt + atoi(tab.t_ent[j]) * 10^i;
+		i++;
+		j--;
 	finFaire
 fin
 
