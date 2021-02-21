@@ -20,6 +20,7 @@ début
 	nbChiffre: entier;
 
 	// calcul le nombre de chiffre hexadecimaux nécessaire
+	// nbChiffre = quotient du nombre de binaire par 4, si il y a un reste nbChiffre++
 	nbChiffre := (tab.nbBin - (tab.nbBin % 4)) / 4 
 	si ((tab.nbBin % 4) != 0) alors
 		nbChiffre++;
@@ -34,7 +35,7 @@ début
 		calc := 0;
 		i := 0;
 
-		// 1ere condition vérifie qu'on ne fait pas de somme en trop pour le dernier chiffre hexa
+		// 1ere condition vérifie qu'on ne fait pas de somme en trop pour le dernier chiffre hexa calculé
 		tantque ((nbPeTour <= tab.nbBin) ET (i <= 3) ET (j >= 1)) faire
 			calc := calc + atoi(tab.t_bin[j]) * 2^i;
 			nbPeTour++;
@@ -73,23 +74,55 @@ fin
 
 procédure entToHexa(entF/sortF tab: s_tab) c'est
 début
-	i, dividende, diviseur, quotient, reste: entier;
-	i := 1;
+	dividende, diviseur, quotient, reste: entier;
+	tab.nbHexa := 1;
 
 	dividende := tab.resEntier;
 	diviseur := 16;
 	reste := dividende % diviseur;
 	quotient := (dividende - reste) / diviseur;
 
-	tab.t_hexa[i] := quotient;
+	tab.t_hexa[tab.nbHexa] := quotient;
 
 	tantque (quotient != 0) faire
-		i++;
+		tab.nbHexa++;
 		dividende := reste;
 		reste := dividende % diviseur;
 		quotient := (dividende - reste) / diviseur;
-		tab.t_hexa[i] := quotient;
+		tab.t_hexa[tab.nbHexa] := quotient;
 	finFaire
+fin
 
-	tab.nbHexa := i;
+procédure hexaToEnt(entF/sortF tab: s_tab) c'est
+début
+	somme, i, j: entier;
+	somme := 0;
+
+	pour i de tab.nbHexa à 1 faire
+		pour j de 0 à (tab.nbHexa - 1) faire
+			somme := somme + atoi(tab.t_hexa[i]) * 16^j; 
+		finFaire
+	finFaire
+	
+	tab.resEnt := somme;
+fin
+
+procédure hexaToBin(entF/sortF tab: s_tab) c'est
+début
+	i, dividende, diviseur, quotient, reste: entier;
+	diviseur := 2;
+
+	pour i de tab.nbHexa à 1 faire
+		dividende := tab.t_hexa[i];
+		quotient := 1;
+
+		tant que ((quotient != 0) ET (tab.nbBin <= MAX_TAB_BIN)) faire
+			tab.nbBin++;
+			reste := dividende % diviseur;
+			quotient := (dividende - reste) / diviseur;
+			// ATTENTION : tableau rempli à l'envers
+			tab.t_bin[tab.nbBin] := reste;
+			dividende := quotient;
+		finFaire
+	finFaire
 fin
