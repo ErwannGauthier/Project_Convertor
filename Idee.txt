@@ -16,3 +16,7 @@
 
 Convertir chaine de caractere en entier:
 https://koor.fr/C/cstdlib/atoi.wp
+
+Convertir entier en chaine de caractere:
+https://www.ltam.lu/cours-c/prg-c82.htm
+itoa (<n_int>, <s>, <b>)
