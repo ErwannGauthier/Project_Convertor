@@ -43,10 +43,11 @@ début
 			j--;
 		finFaire
 
-		tab.t_hexa[nbGrTour] := calc;
+		tab.t_hexa_calc[nbGrTour] := calc;
 		nbGrTour++;
 	finFaire
 	tab.nbHexa := nbGrTour;
+	hexaCalc_To_HexaSaisi(entE tab);
 fin
 
 procédure entToBin(entF/sortF tab: s_tab) c'est
@@ -82,25 +83,28 @@ début
 	reste := dividende % diviseur;
 	quotient := (dividende - reste) / diviseur;
 
-	tab.t_hexa[tab.nbHexa] := quotient;
+	tab.t_hexa_calc[tab.nbHexa] := quotient;
 
 	tantque (quotient != 0) faire
 		tab.nbHexa++;
 		dividende := reste;
 		reste := dividende % diviseur;
 		quotient := (dividende - reste) / diviseur;
-		tab.t_hexa[tab.nbHexa] := quotient;
+		tab.t_hexa_calc[tab.nbHexa] := quotient;
 	finFaire
+
+	hexaCalc_To_HexaSaisi(entE tab);
 fin
 
 procédure hexaToEnt(entF/sortF tab: s_tab) c'est
 début
+	hexaSaisi_To_HexaCalc(entE tab);
 	somme, i, j: entier;
 	somme := 0;
 
 	pour i de tab.nbHexa à 1 faire
 		pour j de 0 à (tab.nbHexa - 1) faire
-			somme := somme + atoi(tab.t_hexa[i]) * 16^j; 
+			somme := somme + tab.t_hexa_calc[i] * 16^j; 
 		finFaire
 	finFaire
 	
@@ -109,11 +113,13 @@ fin
 
 procédure hexaToBin(entF/sortF tab: s_tab) c'est
 début
+	hexaSaisi_To_HexaCalc(entE tab);
+
 	i, dividende, diviseur, quotient, reste: entier;
 	diviseur := 2;
 
 	pour i de tab.nbHexa à 1 faire
-		dividende := tab.t_hexa[i];
+		dividende := tab.t_hexa_calc[i];
 		quotient := 1;
 
 		tant que ((quotient != 0) ET (tab.nbBin <= MAX_TAB_BIN)) faire
@@ -124,5 +130,38 @@ début
 			tab.t_bin[tab.nbBin] := reste;
 			dividende := quotient;
 		finFaire
+	finFaire
+fin
+
+procédure hexaSaisi_To_HexaCalc(entF/sortF tab: s_tab) c'est
+début
+	i: entier;
+	e: ensemble;
+	e := {'0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F', 'a', 'b', 'c', 'd', 'e', 'f'};
+
+	pour i de 1 à tab.nbHexa faire
+		tab.t_hexa[i] := e[tab.t_hexa_calc[i]];
+	finFaire
+fin
+
+procédure hexaCalc_To_HexaSaisi(entF/sortF tab: s_tab) c'est
+début
+	i: entier;
+	pour i de 1 à tab.nbHexa faire
+		si (tab.t_hexa[i]=='A' OU tab.t_hexa[i]=='a') alors
+			tab.t_hexa_calc[i] := 10;
+		sinon si (tab.t_hexa[i]=='B' OU tab.t_hexa[i]=='b') alors
+			tab.t_hexa_calc[i] := 11;
+		sinon si (tab.t_hexa[i]=='C' OU tab.t_hexa[i]=='c') alors
+			tab.t_hexa_calc[i] := 12;
+		sinon si (tab.t_hexa[i]=='D' OU tab.t_hexa[i]=='d') alors
+			tab.t_hexa_calc[i] := 13;
+		sinon si (tab.t_hexa[i]=='E' OU tab.t_hexa[i]=='e') alors
+			tab.t_hexa_calc[i] := 14;
+		sinon si (tab.t_hexa[i]=='F' OU tab.t_hexa[i]=='f') alors
+			tab.t_hexa_calc[i] := 15;
+		sinon
+			tab.t_hexa_calc[i] := atoi(tab.t_hexa[i]);
+		finSi
 	finFaire
 fin

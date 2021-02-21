@@ -6,6 +6,7 @@ constante chaine(MAX_TAB_ENT+1) MAX_ENT_CHAINE := "1048575";
 
 type tabBin = tableau[1..MAX_TAB_BIN] de caractere;
 type tabHexa = tableau[1..MAX_TAB_HEXA] de caractere;
+type tabHexaCalc = tableau[1..MAX_TAB_HEXA] de entier;
 type tabEnt = tableau[1..MAX_TAB_ENT] de caractere;
 
 type s_tab = structure
@@ -14,6 +15,7 @@ début
 	nbBin: entier;
 
 	t_hexa: tabHexa;
+	t_hexa_calc: tabHexaCalc
 	nbHexa: entier;
 
 	t_ent: tabEnt;
@@ -96,7 +98,7 @@ procédure saisiHexa(entF/sortF tab: s_tab) c'est
 début
 	saisi: caractere;
 	e: ensemble;
-	e := {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, A, B, C, D, E, F, a, b, c, d, e, f};
+	e := {'0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F', 'a', 'b', 'c', 'd', 'e', 'f'};
 
 	lireClavier(saisi);
 
