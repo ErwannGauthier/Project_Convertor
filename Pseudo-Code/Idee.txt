@@ -1,0 +1,22 @@
+-------------------- CONVERTISSEUR DECIMAL, BINAIRE, HEXADECIMAL --------------------
+
+
+1 - Fonction affichMenu
+2 - Switch Decimal ? Binaire ? Hexadecimal ?
+3 - Fonction Dec_To_Bin
+4 - Fonction Dec_To_Hexa
+5 - Fonction Bin_To_Dec
+6 - Fonction Bin_To_Hexa
+7 - Fonction Hexa_To_Bin
+8 - Fonction Hexa_To_Dec
+9 - Fonction affichRes
+
+
+
+
+Convertir chaine de caractere en entier:
+https://koor.fr/C/cstdlib/atoi.wp
+
+Convertir entier en chaine de caractere:
+https://www.ltam.lu/cours-c/prg-c82.htm
+itoa (<n_int>, <s>, <b>)
