@@ -13,10 +13,12 @@ type s_tab = structure
 début
 	t_bin: tabBin;
 	nbBin: entier;
+	saisiBin: booléen;
 
 	t_hexa: tabHexa;
 	t_hexa_calc: tabHexaCalc
 	nbHexa: entier;
+	saisiHexa: booléen;
 
 	t_ent: tabEnt;
 	nbEnt: entier;
@@ -26,12 +28,17 @@ fin
 procédure initTab(sortF tab: s_tab) c'est
 début
 	tab.nbBin := 0;
+	tab.saisiBin := FAUX;
+
 	tab.nbHexa := 0;
+	tab.saisiHexa := FAUX;
+
 	tab.nbEnt := 0;
 fin
 
 procédure saisiBin(entF/sortF tab: s_tab) c'est
 début
+	tab.saisiBin := VRAI;
 	saisi: caractere;
 
 	lireClavier(saisi);
@@ -96,6 +103,7 @@ fin
 
 procédure saisiHexa(entF/sortF tab: s_tab) c'est
 début
+	tab.saisiHexa := VRAI;
 	saisi: caractere;
 	e: ensemble;
 	e := {'0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F', 'a', 'b', 'c', 'd', 'e', 'f'};

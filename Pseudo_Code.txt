@@ -2,24 +2,22 @@ programme Convertor c'est
 
 constante entier MAX_CHAR_AFFICH := 53;
 constante entier MAX_HEXA := 100
+constante chaine(MAX_CHAR_AFFICH) TETE := "+--------------------------------------------------+";
+constante chaine(MAX_CHAR_AFFICH) ESPACE := "|                                                  |";
 
 procédure affichMenu() c'est
-début
-	tete, espace : chaine(MAX_CHAR_AFFICH);
-	tete := "+--------------------------------------------------+";
-	espace := "|                                                  |";
-	
+début                                                  |";
 	// Affichage
-	ecrireEcran(tete);
-	ecrireEcran(espace);
-	ecrireEcran(espace);
+	ecrireEcran(TETE);
+	ecrireEcran(ESPACE);
+	ecrireEcran(ESPACE);
 	ecrireEcran("|	De quel type est votre chiffre ?                |");
 	ecrireEcran("|		1 : Entier                              |");
 	ecrireEcran("|		2 : Binaire                             |");
 	ecrireEcran("|          3 : Hexadecimal                         |");
-	ecrireEcran(espace);
-	ecrireEcran(espace);
-	ecrireEcran(tete);
+	ecrireEcran(ESPACE);
+	ecrireEcran(ESPACE);
+	ecrireEcran(TETE);
 fin
 
 procédure affichRes(entF ent: entier, entF bin: entier, entF hexa: chaine(100)) c'est
@@ -29,47 +27,17 @@ début
 	espace := "|                                                  |";
 
 	//Affichage
-	ecrireEcran(tete);
-	ecrireEcran(espace);
-	ecrireEcran(espace);
+	ecrireEcran(TETE);
+	ecrireEcran(ESPACE);
+	ecrireEcran(ESPACE);
 	ecrireEcran("|	Décimal :", ent);
-	ecrireEcran(espace);
+	ecrireEcran(ESPACE);
 	ecrireEcran("|	Binaire :", bin);
-	ecrireEcran(espace);
+	ecrireEcran(ESPACE);
 	ecrireEcran("|	Hexadécimal :", hexa);
-	ecrireEcran(espace);
-	ecrireEcran(espace);
-	ecrireEcran(tete);
-fin
-
-fonction entToBin(entF d: int) délivre entier c'est
-début
-
-fin
-
-fonction entToHexa(entF d: int) délivre chaine(MAX_HEXA) c'est
-début
-
-fin
-
-fonction binToEnt(entF b: int) délivre entier c'est
-début
-
-fin
-
-fonction binToHexa(entF b: int) délivre chaine(MAX_HEXA) c'est
-début
-
-fin
-
-fonction hexaToEnt(entF h: chaine(MAX_HEXA)) c'est
-début
-
-fin
-
-fonction hexaToBin(entF h: chaine(MAX_HEXA)) c'est
-début
-
+	ecrireEcran(ESPACE);
+	ecrireEcran(ESPACE);
+	ecrireEcran(TETE);
 fin
 
 main c'est
@@ -77,32 +45,44 @@ début
 	resSwitch: entier;
 	ent, binaire: entier;
 	hexadec: chaine(MAX_HEXA);
+	continue: booléen;
+
+	continue := VRAI;
 
 	répéter
 		affichMenu();
 		lireClavier(resSwitch);
-	jusqu'à (resSwitch>=1 ET resSwitch<=3)
+	jusqu'à (resSwitch>=1 ET resSwitch<=4)
+	
+	tantque (continue != FAUX) faire
+		selon resSwitch faire
+			cas 1:	ecrireEcran("Entrer le chiffre décimal :");
+				lireClavier(ent);
+				binaire := entToBin(entE decimal);
+				hexadec := entToHexa(entE decimal);
 
-	selon resSwitch faire
-		cas 1:	ecrireEcran("Entrer le chiffre décimal :");
-			lireClavier(ent);
-			binaire := entToBin(entE decimal);
-			hexadec := entToHexa(entE decimal);
+			cas 2:	ecrireEcran("Entrer le chiffre binaire :");
+				lireClavier(binaire);
+				decimal := binToEnt(entE binaire);
+				hexadec := binToHexa(ente binaire);
 
-		cas 2:	ecrireEcran("Entrer le chiffre binaire :");
-			lireClavier(binaire);
-			decimal := binToEnt(entE binaire);
-			hexadec := binToHexa(ente binaire);
+			cas 3:	ecrireEcran("Entrer le chiffre hexadécimal :");
+				lireClavier(hexadec);
+				decimal := hexaToEnt(entE hexadec);
+				binaire := hexaToBin(entE hexadec);
 
-		cas 3:	ecrireEcran("Entrer le chiffre hexadécimal :");
-			lireClavier(hexadec);
-			decimal := hexaToEnt(entE hexadec);
-			binaire := hexaToBin(entE hexadec);
+			cas 4:	ecrireEcran("Aurevoir.");
+				continue := FAUX;
 
-		default : ecrireEcran("Erreur : Veuillez rentrer 1, 2 ou 3");
-	finSelon
+			default : ecrireEcran("Erreur : Veuillez rentrer 1, 2, 3 ou 4");
+		finSelon
 
-	affichRes(entE ent, entE binaire, entE hexadec);
+		affichRes(entE ent, entE binaire, entE hexadec);
+
+		affichMenu();
+		lireClavier(resSwitch);
+
+	finFaire
 fin
 
 	
