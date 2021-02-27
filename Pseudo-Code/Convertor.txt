@@ -1,13 +1,317 @@
-programme Convertor c'est
+// ------------------------------ CONSTANTES ET STRUCTURES ------------------------------
 
+// Affichage
 constante entier MAX_CHAR_AFFICH := 53;
 constante entier MAX_HEXA := 100
 constante chaine(MAX_CHAR_AFFICH) TETE := "+--------------------------------------------------+";
 constante chaine(MAX_CHAR_AFFICH) ESPACE := "|                                                  |";
 
+// Saisi-Calcul
+constante entier MAX_TAB_BIN := 20; // car tableau en pseudo-code : 1..MAX, alors qu'en C : 0..MAX-1
+constante entier MAX_TAB_HEXA := 5;
+constante entier MAX_TAB_ENT := 7; // Chiffre max : 1 048 575, (FFFFF)16, (11111111111111111111)2
+constante entier MAX_ENT := 1 048 575;
+constante chaine(MAX_TAB_ENT+1) MAX_ENT_CHAINE := "1048575";
+
+type tabBin = tableau[1..MAX_TAB_BIN] de caractere;
+type tabHexa = tableau[1..MAX_TAB_HEXA] de caractere;
+type tabHexaCalc = tableau[1..MAX_TAB_HEXA] de entier;
+type tabEnt = tableau[1..MAX_TAB_ENT] de caractere;
+
+type s_tab = structure
+début
+	t_bin: tabBin;
+	nbBin: entier;
+	saisiBin: booléen;
+
+	t_hexa: tabHexa;
+	t_hexa_calc: tabHexaCalc
+	nbHexa: entier;
+	saisiHexa: booléen;
+
+	t_ent: tabEnt;
+	nbEnt: entier;
+	resEnt : entier;
+fin
+
+
+// ------------------------------ SAISIE ------------------------------
+
+
+procédure initTab(sortF tab: s_tab) c'est
+début
+	tab.nbBin := 0;
+	tab.saisiBin := FAUX;
+
+	tab.nbHexa := 0;
+	tab.saisiHexa := FAUX;
+
+	tab.nbEnt := 0;
+fin
+
+procédure saisiEnt(entF/sortF tab: s_tab) c'est
+début
+	saisi: caractere;
+	i, j: entier;
+	
+	lireClavier(saisi);
+
+	répéter
+		ecrireEcran("Erreur: un nombre est exclusivement constitué de chiffre.");
+		ecrireEcran("Entrer un nombre :");
+		lireClavier(saisi);
+	jusqu'à ((saisi >= 0) ET (saisi <= 9))
+
+	tab.nbEnt++;
+
+	tantque ((tab.nbEnt <= MAX_SAISI_ENT) ET ((saisi >= 0) ET (saisi <= 9))) faire
+		tab.t_ent[tab.nbEnt] := saisi;
+		tab.nbEnt++;
+		lireClavier(saisi);
+	finFaire
+
+	// Converti le tableau de caractère en entier
+	i := 0;
+	j := tab.nbEnt;
+	tab.resEnt := 0;
+	tantque (((i+1) <= tab.nbEnt) ET (j >= 1)) faire
+		tab.resEnt := tab.resEnt + atoi(tab.t_ent[j]) * 10^i;
+		i++;
+		j--;
+	finFaire
+
+	// Vérifie que resEnt < MAX_ENT sinon resEnt := MAX_ENT
+	si (tab.resEnt > MAX_ENT) alors
+		tab.resEnt := MAX_ENT;
+
+		k: entier;		
+		pour k de 1 à tab.nbEnt faire
+			tab.t_ent[i] := MAX_ENT_CHAINE.charAt(i);
+		finFaire
+	finSi
+fin
+
+procédure saisiBin(entF/sortF tab: s_tab) c'est
+début
+	tab.saisiBin := VRAI;
+	saisi: caractere;
+
+	lireClavier(saisi);
+
+	// Vérifie que le premier caractère vaut 0 ou 1 sinon Erreur
+	répéter
+		ecrireEcran("Erreur: un nombre binaire est constitué exclusivement de 0 et de 1.");
+		ecrireEcran("Entrer un nombre binaire :");
+		lireClavier(saisi);
+	jusqu'à ((saisi=='0') OU (saisi=='1'))
+
+	tab.nbBin++;
+
+	tantque ((tab.nbBin <= MAX_SAISI_BIN) ET ((saisi=='0') OU (saisi=='1'))) faire
+		tab.t_bin[tab.nbBin] := saisi;
+		tab.nbBin++;
+		lireClavier(saisi);
+	finFaire
+fin
+
+procédure saisiHexa(entF/sortF tab: s_tab) c'est
+début
+	tab.saisiHexa := VRAI;
+	saisi: caractere;
+	e: ensemble;
+	e := {'0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F', 'a', 'b', 'c', 'd', 'e', 'f'};
+
+	lireClavier(saisi);
+
+	répéter
+		ecrireEcran("Erreur: un nombre hexadécimal est constitué de chiffre et/ou des lettres A à F.");
+		ecrireEcran("Entrer un nombre hexadécimal :");
+		lireClavier(saisi);
+	jusqu'à (saisi dans e)
+
+	tab.nbHexa++;
+
+	tantque ((tab.nbHexa <= MAX_SAISI_HEXA) ET (saisi dans e)) faire
+		tab.t_hexa[tab.nbHexa] := saisi;
+		tab.nbHexa++;
+		lireClavier(saisi);
+	finFaire
+fin
+
+
+// ------------------------------ CALCUL ------------------------------
+
+
+procédure hexaSaisi_To_HexaCalc(entF/sortF tab: s_tab) c'est
+début
+	i: entier;
+	e: ensemble;
+	e := {'0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F', 'a', 'b', 'c', 'd', 'e', 'f'};
+
+	pour i de 1 à tab.nbHexa faire
+		tab.t_hexa[i] := e[tab.t_hexa_calc[i]];
+	finFaire
+fin
+
+procédure hexaCalc_To_HexaSaisi(entF/sortF tab: s_tab) c'est
+début
+	i: entier;
+	pour i de 1 à tab.nbHexa faire
+		si (tab.t_hexa[i]=='A' OU tab.t_hexa[i]=='a') alors
+			tab.t_hexa_calc[i] := 10;
+		sinon si (tab.t_hexa[i]=='B' OU tab.t_hexa[i]=='b') alors
+			tab.t_hexa_calc[i] := 11;
+		sinon si (tab.t_hexa[i]=='C' OU tab.t_hexa[i]=='c') alors
+			tab.t_hexa_calc[i] := 12;
+		sinon si (tab.t_hexa[i]=='D' OU tab.t_hexa[i]=='d') alors
+			tab.t_hexa_calc[i] := 13;
+		sinon si (tab.t_hexa[i]=='E' OU tab.t_hexa[i]=='e') alors
+			tab.t_hexa_calc[i] := 14;
+		sinon si (tab.t_hexa[i]=='F' OU tab.t_hexa[i]=='f') alors
+			tab.t_hexa_calc[i] := 15;
+		sinon
+			tab.t_hexa_calc[i] := atoi(tab.t_hexa[i]);
+		finSi
+	finFaire
+fin
+
+procédure entToBin(entF/sortF tab: s_tab) c'est
+début
+	dividende, diviseur, quotient, reste: entier;
+	tab.nbBin := 1;
+
+	dividende := tab.resEnt;
+	diviseur := 2;
+	reste := dividende % diviseur;
+	quotient := (dividende - reste) / diviseur;
+
+	tab.t_bin[tab.nbBin] := reste;
+
+	tantque (quotient != 0) faire
+		tab.nbBin++;
+		dividende := quotient;
+		reste := dividende % diviseur;
+		quotient := (dividende - reste) / diviseur;
+		tab.t_bin[tab.nbBin] := reste;
+	finFaire
+fin
+
+procédure entToHexa(entF/sortF tab: s_tab) c'est
+début
+	dividende, diviseur, quotient, reste: entier;
+	tab.nbHexa := 1;
+
+	dividende := tab.resEnt;
+	diviseur := 16;
+	reste := dividende % diviseur;
+	quotient := (dividende - reste) / diviseur;
+
+	tab.t_hexa_calc[tab.nbHexa] := reste;
+
+	tantque (quotient != 0) faire
+		tab.nbHexa++;
+		dividende := quotient;
+		reste := dividende % diviseur;
+		quotient := (dividende - reste) / diviseur;
+		tab.t_hexa_calc[tab.nbHexa] := reste;
+	finFaire
+
+	hexaCalc_To_HexaSaisi(entE tab);
+fin
+
+procédure binToEnt(entF/sortF tab : s_tab) c'est
+début
+	somme, i, j: entier;
+	somme := 0;
+	j := 0;
+
+	// Parcours du tableau à l'envers car un binaire se lit de droite à gauche
+	pour i de tab.nbBin à 1 faire
+		// ici on admet que atoi() converti un caractère en entier
+		somme := somme + atoi(tab.t_bin[i]) * 2^j; 
+		j++;
+	finFaire
+	
+	tab.resEnt := somme;
+fin
+
+procédure binToHexa(entF/sortF tab: s_tab) c'est
+début
+	nbChiffre: entier;
+
+	// calcul le nombre de chiffre hexadecimaux nécessaire
+	// nbChiffre = quotient du nombre de binaire par 4, si il y a un reste nbChiffre++
+	nbChiffre := (tab.nbBin - (tab.nbBin % 4)) / 4 
+	si ((tab.nbBin % 4) != 0) alors
+		nbChiffre++;
+	finSi
+
+	nbGrTour, nbPeTour, calc, i: entier;
+	nbGrTour := 1;
+	nbPeTour := 1;
+	j := tab.nbBin;
+
+	tantque (nbGrTour <= nbChiffre) faire
+		calc := 0;
+		i := 0;
+
+		// 1ere condition vérifie qu'on ne fait pas de somme en trop pour le dernier chiffre hexa calculé
+		tantque ((nbPeTour <= tab.nbBin) ET (i <= 3) ET (j >= 1)) faire
+			calc := calc + atoi(tab.t_bin[j]) * 2^i;
+			nbPeTour++;
+			i++;
+			j--;
+		finFaire
+
+		tab.t_hexa_calc[nbGrTour] := calc;
+		nbGrTour++;
+	finFaire
+
+	tab.nbHexa := nbGrTour - 1;
+	hexaCalc_To_HexaSaisi(entE tab);
+fin
+
+procédure hexaToEnt(entF/sortF tab: s_tab) c'est
+début
+	hexaSaisi_To_HexaCalc(entE tab);
+	somme, i, j: entier;
+	somme := 0;
+	j := 0;
+
+	pour i de tab.nbHexa à 1 faire
+		somme := somme + tab.t_hexa_calc[i] * 16^j; 
+	finFaire
+	
+	tab.resEnt := somme;
+fin
+
+procédure hexaToBin(entF/sortF tab: s_tab) c'est
+début
+	hexaSaisi_To_HexaCalc(entE tab);
+
+	i, dividende, diviseur, quotient, reste: entier;
+	diviseur := 2;
+
+	pour i de tab.nbHexa à 1 faire
+		dividende := tab.t_hexa_calc[i];
+		quotient := 1;
+
+		tant que ((quotient != 0) ET (tab.nbBin <= MAX_TAB_BIN)) faire
+			tab.nbBin++;
+			reste := dividende % diviseur;
+			quotient := (dividende - reste) / diviseur;
+			tab.t_bin[tab.nbBin] := reste;
+			dividende := quotient;
+		finFaire
+	finFaire
+fin
+
+
+// ------------------------------ AFFICHAGE ------------------------------
+
+
 procédure affichMenu() c'est
-début                                                  |";
-	// Affichage
+début
 	ecrireEcran(TETE);
 	ecrireEcran(ESPACE);
 	ecrireEcran(ESPACE);
@@ -15,62 +319,94 @@ début                                                  |";
 	ecrireEcran("|		1 : Entier                              |");
 	ecrireEcran("|		2 : Binaire                             |");
 	ecrireEcran("|          3 : Hexadecimal                         |");
-	ecrireEcran("|          4 : Quitter                             |");
 	ecrireEcran(ESPACE);
 	ecrireEcran(ESPACE);
 	ecrireEcran(TETE);
 fin
 
-procédure affichRes(entF ent: entier, entF bin: entier, entF hexa: chaine(100)) c'est
+procédure affichBin(entF tab: s_tab) c'est
 début
-	tete, espace : chaine(53);
-	tete := "+--------------------------------------------------+";
-	espace := "|                                                  |";
+	i: entier;
 
-	//Affichage
+	si (tab.saisiBin == VRAI) alors
+		pour i de 1 à tab.nbBin faire
+			ecrireEcran(tab.t_bin[i]);
+		finFaire
+	sinon
+		pour i de tab.nbBin à 1 faire
+			ecrireEcran(tab.t_bin[i]);
+		finFaire
+	finSi
+fin
+
+procédure affichHexa(entF tab: s_tab) c'est
+début
+	i: entier;
+
+	si (tab.saisiHexa == VRAI) alors
+		pour i de 1 à tab.nbHexa faire
+			ecrireEcran(tab.t_hexa[i]);
+		finFaire
+	sinon
+		pour i de tab.nbHexa à 1 faire
+			ecrireEcran(tab.t_hexa[i]);
+		finFaire
+	finSi
+fin
+
+procédure affichRes(entF tab: s_tab) c'est
+début
 	ecrireEcran(TETE);
 	ecrireEcran(ESPACE);
 	ecrireEcran(ESPACE);
-	ecrireEcran("|	Décimal :", ent);
+	ecrireEcran("|	Entier :", tab.reEnt);
 	ecrireEcran(ESPACE);
-	ecrireEcran("|	Binaire :", bin);
+	ecrireEcran("|	Binaire :");
+	affichBin(entE tab);
 	ecrireEcran(ESPACE);
-	ecrireEcran("|	Hexadécimal :", hexa);
+	ecrireEcran("|	Hexadécimal :");
+	affichHexa(entE tab);
 	ecrireEcran(ESPACE);
 	ecrireEcran(ESPACE);
 	ecrireEcran(TETE);
 fin
 
-main c'est
+
+// ------------------------------ MAIN ------------------------------
+
+
+programme main c'est
 début 
 	resSwitch: entier;
-	ent, binaire: entier;
-	hexadec: chaine(MAX_HEXA);
 	continue: booléen;
 
 	continue := VRAI;
-
-	répéter
-		affichMenu();
-		lireClavier(resSwitch);
-	jusqu'à (resSwitch>=1 ET resSwitch<=4)
 	
 	tantque (continue != FAUX) faire
+
+		initTab(sortE tab);
+
+		affichMenu();
+		lireClavier(resSwitch);
+
 		selon resSwitch faire
 			cas 1:	ecrireEcran("Entrer le chiffre décimal :");
-				lireClavier(ent);
-				binaire := entToBin(entE decimal);
-				hexadec := entToHexa(entE decimal);
+				saisiEnt(entE/sortE tab);
+				entToBin(entE/sortE tab);
+				entToHexa(entE/sortE tab);
+				affichRes(entE tab);
 
 			cas 2:	ecrireEcran("Entrer le chiffre binaire :");
-				lireClavier(binaire);
-				decimal := binToEnt(entE binaire);
-				hexadec := binToHexa(ente binaire);
+				saisiBin(entE/sortE tab);
+				binToEnt(entE/sortE tab);
+				binToHexa(entE/sortE tab);
+				affichRes(entE tab);
 
 			cas 3:	ecrireEcran("Entrer le chiffre hexadécimal :");
-				lireClavier(hexadec);
-				decimal := hexaToEnt(entE hexadec);
-				binaire := hexaToBin(entE hexadec);
+				saisiHexa(entE/sortE tab);
+				hexaToEnt(entE/sortE tab);
+				hexaToBin(entE/sortE tab);
+				affichRes(entE tab);
 
 			cas 4:	ecrireEcran("Aurevoir.");
 				continue := FAUX;
@@ -78,12 +414,5 @@ début
 			default : ecrireEcran("Erreur : Veuillez rentrer 1, 2, 3 ou 4");
 		finSelon
 
-		affichRes(entE ent, entE binaire, entE hexadec);
-
-		affichMenu();
-		lireClavier(resSwitch);
-
 	finFaire
 fin
-
-	

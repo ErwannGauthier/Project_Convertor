@@ -1,6 +1,5 @@
 procédure affichMenu() c'est
 début
-	// Affichage
 	ecrireEcran(TETE);
 	ecrireEcran(ESPACE);
 	ecrireEcran(ESPACE);
@@ -45,11 +44,6 @@ fin
 
 procédure affichRes(entF tab: s_tab) c'est
 début
-	tete, espace : chaine(53);
-	tete := "+--------------------------------------------------+";
-	espace := "|                                                  |";
-
-	//Affichage
 	ecrireEcran(TETE);
 	ecrireEcran(ESPACE);
 	ecrireEcran(ESPACE);
