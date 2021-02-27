@@ -1,0 +1,41 @@
+programme main c'est
+début 
+	resSwitch: entier;
+	continue: booléen;
+
+	continue := VRAI;
+	
+	tantque (continue != FAUX) faire
+
+		initTab(sortE tab);
+
+		affichMenu();
+		lireClavier(resSwitch);
+
+		selon resSwitch faire
+			cas 1:	ecrireEcran("Entrer le chiffre décimal :");
+				saisiEnt(entE/sortE tab);
+				entToBin(entE/sortE tab);
+				entToHexa(entE/sortE tab);
+				affichRes(entE tab);
+
+			cas 2:	ecrireEcran("Entrer le chiffre binaire :");
+				saisiBin(entE/sortE tab);
+				binToEnt(entE/sortE tab);
+				binToHexa(entE/sortE tab);
+				affichRes(entE tab);
+
+			cas 3:	ecrireEcran("Entrer le chiffre hexadécimal :");
+				saisiHexa(entE/sortE tab);
+				hexaToEnt(entE/sortE tab);
+				hexaToBin(entE/sortE tab);
+				affichRes(entE tab);
+
+			cas 4:	ecrireEcran("Aurevoir.");
+				continue := FAUX;
+
+			default : ecrireEcran("Erreur : Veuillez rentrer 1, 2, 3 ou 4");
+		finSelon
+
+	finFaire
+fin

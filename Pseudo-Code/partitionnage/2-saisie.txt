@@ -32,7 +32,7 @@ début
 	finFaire
 fin
 
-procédure saisiEntier(entF/sortF tab: s_tab) c'est
+procédure saisiEnt(entF/sortF tab: s_tab) c'est
 début
 	saisi: caractere;
 	i, j: entier;
