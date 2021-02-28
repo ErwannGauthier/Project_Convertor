@@ -2,24 +2,24 @@
 
 // Affichage
 constante entier MAX_CHAR_AFFICH := 53;
-constante entier MAX_HEXA := 100
 constante chaine(MAX_CHAR_AFFICH) TETE := "+--------------------------------------------------+";
 constante chaine(MAX_CHAR_AFFICH) ESPACE := "|                                                  |";
 
 // Saisi-Calcul
+// Chiffre max : 1 048 575, (FFFFF)16, (11111111111111111111)2
+
+constante entier MAX_ENT := 1 048 575;
 constante entier MAX_TAB_BIN := 20; // car tableau en pseudo-code : 1..MAX, alors qu'en C : 0..MAX-1
 constante entier MAX_TAB_HEXA := 5;
-constante entier MAX_TAB_ENT := 7; // Chiffre max : 1 048 575, (FFFFF)16, (11111111111111111111)2
-constante entier MAX_ENT := 1 048 575;
-constante chaine(MAX_TAB_ENT+1) MAX_ENT_CHAINE := "1048575";
 
 type tabBin = tableau[1..MAX_TAB_BIN] de caractere;
 type tabHexa = tableau[1..MAX_TAB_HEXA] de caractere;
 type tabHexaCalc = tableau[1..MAX_TAB_HEXA] de entier;
-type tabEnt = tableau[1..MAX_TAB_ENT] de caractere;
 
 type s_tab = structure
 début
+	resEnt : entier;
+
 	t_bin: tabBin;
 	nbBin: entier;
 	saisiBin: booléen;
@@ -28,10 +28,6 @@ début
 	t_hexa_calc: tabHexaCalc
 	nbHexa: entier;
 	saisiHexa: booléen;
-
-	t_ent: tabEnt;
-	nbEnt: entier;
-	resEnt : entier;
 fin
 
 
@@ -40,54 +36,27 @@ fin
 
 procédure initTab(sortF tab: s_tab) c'est
 début
+	tab.nbEnt := 0;
+
 	tab.nbBin := 0;
 	tab.saisiBin := FAUX;
 
 	tab.nbHexa := 0;
 	tab.saisiHexa := FAUX;
 
-	tab.nbEnt := 0;
 fin
 
 procédure saisiEnt(entF/sortF tab: s_tab) c'est
 début
-	saisi: caractere;
-	i, j: entier;
-	
-	lireClavier(saisi);
+	lireClavier(tab.resEnt);
 
-	répéter
-		ecrireEcran("Erreur: un nombre est exclusivement constitué de chiffre.");
-		ecrireEcran("Entrer un nombre :");
-		lireClavier(saisi);
-	jusqu'à ((saisi >= 0) ET (saisi <= 9))
+	si (tab.resEnt < 0) alors
+		ecrireEcran("ERREUR: Vous avez saisi un entier négatif.");
+		ecrireEcran("Saisissez un entier positif : ");
+		saisiEnt(entE/sortE tab);
 
-	tab.nbEnt++;
-
-	tantque ((tab.nbEnt <= MAX_SAISI_ENT) ET ((saisi >= 0) ET (saisi <= 9))) faire
-		tab.t_ent[tab.nbEnt] := saisi;
-		tab.nbEnt++;
-		lireClavier(saisi);
-	finFaire
-
-	// Converti le tableau de caractère en entier
-	i := 0;
-	j := tab.nbEnt;
-	tab.resEnt := 0;
-	tantque (((i+1) <= tab.nbEnt) ET (j >= 1)) faire
-		tab.resEnt := tab.resEnt + atoi(tab.t_ent[j]) * 10^i;
-		i++;
-		j--;
-	finFaire
-
-	// Vérifie que resEnt < MAX_ENT sinon resEnt := MAX_ENT
-	si (tab.resEnt > MAX_ENT) alors
+	sinon si (tab.resEnt > MAX_ENT) alors
 		tab.resEnt := MAX_ENT;
-
-		k: entier;		
-		pour k de 1 à tab.nbEnt faire
-			tab.t_ent[i] := MAX_ENT_CHAINE.charAt(i);
-		finFaire
 	finSi
 fin
 
@@ -319,6 +288,7 @@ début
 	ecrireEcran("|		1 : Entier                              |");
 	ecrireEcran("|		2 : Binaire                             |");
 	ecrireEcran("|          3 : Hexadecimal                         |");
+	ecrireEcran("|          4 : Quitter                             |");
 	ecrireEcran(ESPACE);
 	ecrireEcran(ESPACE);
 	ecrireEcran(TETE);
@@ -359,7 +329,7 @@ début
 	ecrireEcran(TETE);
 	ecrireEcran(ESPACE);
 	ecrireEcran(ESPACE);
-	ecrireEcran("|	Entier :", tab.reEnt);
+	ecrireEcran("|	Entier :", tab.resEnt);
 	ecrireEcran(ESPACE);
 	ecrireEcran("|	Binaire :");
 	affichBin(entE tab);

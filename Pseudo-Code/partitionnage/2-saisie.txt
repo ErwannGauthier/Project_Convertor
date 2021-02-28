@@ -34,43 +34,15 @@ fin
 
 procédure saisiEnt(entF/sortF tab: s_tab) c'est
 début
-	saisi: caractere;
-	i, j: entier;
-	
-	lireClavier(saisi);
+	lireClavier(tab.resEnt);
 
-	répéter
-		ecrireEcran("Erreur: un nombre est exclusivement constitué de chiffre.");
-		ecrireEcran("Entrer un nombre :");
-		lireClavier(saisi);
-	jusqu'à ((saisi >= 0) ET (saisi <= 9))
+	si (tab.resEnt < 0) alors
+			ecrireEcran("ERREUR: Vous avez saisi un entier négatif.");
+			ecrireEcran("Saisissez un entier positif : ");
+			saisiEnt(entE/sortE tab);
 
-	tab.nbEnt++;
-
-	tantque ((tab.nbEnt <= MAX_SAISI_ENT) ET ((saisi >= 0) ET (saisi <= 9))) faire
-		tab.t_ent[tab.nbEnt] := saisi;
-		tab.nbEnt++;
-		lireClavier(saisi);
-	finFaire
-
-	// Converti le tableau de caractère en entier
-	i := 0;
-	j := tab.nbEnt;
-	tab.resEnt := 0;
-	tantque (((i+1) <= tab.nbEnt) ET (j >= 1)) faire
-		tab.resEnt := tab.resEnt + atoi(tab.t_ent[j]) * 10^i;
-		i++;
-		j--;
-	finFaire
-
-	// Vérifie que resEnt < MAX_ENT sinon resEnt := MAX_ENT
-	si (tab.resEnt > MAX_ENT) alors
+	sinon si (tab.resEnt > MAX_ENT) alors
 		tab.resEnt := MAX_ENT;
-
-		k: entier;		
-		pour k de 1 à tab.nbEnt faire
-			tab.t_ent[i] := MAX_ENT_CHAINE.charAt(i);
-		finFaire
 	finSi
 fin
 
