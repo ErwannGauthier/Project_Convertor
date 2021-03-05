@@ -74,11 +74,10 @@ début
 		lireClavier(saisi);
 	jusqu'à ((saisi=='0') OU (saisi=='1'))
 
-	tab.nbBin++;
 
 	tantque ((tab.nbBin <= MAX_SAISI_BIN) ET ((saisi=='0') OU (saisi=='1'))) faire
-		tab.t_bin[tab.nbBin] := saisi;
 		tab.nbBin++;
+		tab.t_bin[tab.nbBin] := saisi;
 		lireClavier(saisi);
 	finFaire
 fin
@@ -98,11 +97,10 @@ début
 		lireClavier(saisi);
 	jusqu'à (saisi dans e)
 
-	tab.nbHexa++;
 
 	tantque ((tab.nbHexa <= MAX_SAISI_HEXA) ET (saisi dans e)) faire
-		tab.t_hexa[tab.nbHexa] := saisi;
 		tab.nbHexa++;
+		tab.t_hexa[tab.nbHexa] := saisi;
 		lireClavier(saisi);
 	finFaire
 fin
@@ -111,7 +109,7 @@ fin
 // ------------------------------ CALCUL ------------------------------
 
 
-procédure hexaSaisi_To_HexaCalc(entF/sortF tab: s_tab) c'est
+procédure hexaCalc_To_HexaSaisi(entF/sortF tab: s_tab) c'est
 début
 	i: entier;
 	e: ensemble;
@@ -122,7 +120,7 @@ début
 	finFaire
 fin
 
-procédure hexaCalc_To_HexaSaisi(entF/sortF tab: s_tab) c'est
+procédure hexaSaisi_To_HexaCalc(entF/sortF tab: s_tab) c'est
 début
 	i: entier;
 	pour i de 1 à tab.nbHexa faire
@@ -215,7 +213,7 @@ début
 		nbChiffre++;
 	finSi
 
-	nbGrTour, nbPeTour, calc, i: entier;
+	nbGrTour, nbPeTour, calc, i, j: entier;
 	nbGrTour := 1;
 	nbPeTour := 1;
 	j := tab.nbBin;
