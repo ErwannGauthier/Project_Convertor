@@ -6,14 +6,14 @@ import java.util.*;
 
 // -------------------------------------- SUPER-CLASS NUMBER --------------------------------------
 
-class Number
+abstract class Number
 {
     public int entier;
 
-    public boolean saisiBin = false;
-    public ArrayList<Integer> t_bin = new ArrayList<Integer>(20);
+    public boolean saisiBin;
+    public ArrayList<Integer> t_bin;
 
-    public boolean saisiHexa = false;
+    public boolean saisiHexa;
     public ArrayList<Character> t_hexa = new ArrayList<Character>(23) {{
         add('0');
         add('1');
@@ -38,8 +38,16 @@ class Number
         add('e');
         add('f');
     }};
-    public ArrayList<Integer> t_hexa_calc = new ArrayList<Integer>(5);
+    public ArrayList<Integer> t_hexa_calc;
 
+    public Number()
+    {
+        saisiBin = false;
+        t_bin = new ArrayList<Integer>(20);
+
+        saisiHexa = false;
+        t_hexa_calc = new ArrayList<Integer>(5);
+    }
 
     // ---------- METHODES CALCULS ----------
 
@@ -158,6 +166,7 @@ class Entier extends Number
 {
     public Entier() throws IOException
     {
+        super();
         Scanner scan = new Scanner(System.in);
         String videBuffer = new String();
 
@@ -187,6 +196,7 @@ class Binaire extends Number
 {
     public Binaire() throws IOException
     {
+        super();
         saisiBin = true;
 
         // ----- PARTIE SAISI -----
@@ -238,6 +248,7 @@ class Hexadecimal extends Number
 {
     public Hexadecimal() throws IOException
     {
+        super();
         saisiHexa = true;
 
         // ----- PARTIE SAISI -----
