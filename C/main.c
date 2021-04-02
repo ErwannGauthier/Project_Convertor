@@ -392,17 +392,6 @@ void affichRes(s_tab *tab)
 
 int main()
 {
-    /*s_tab tableau;
-
-    initTab(&tableau);
-    saisiHexa(&tableau);
-    int i;
-    printf("%d\n", tableau.nbHexa);
-    for(i=0; i < tableau.nbHexa; i++)
-    {
-        printf("%c", tableau.t_hexa[i]);
-    }*/
-
     int resSwitch;
     bool continuer;
     s_tab tableaux;
