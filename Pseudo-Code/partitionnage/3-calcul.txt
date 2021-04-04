@@ -1,148 +1,19 @@
-procédure binToEnt(entF/sortF tab : s_tab) c'est
-début
-	somme, i, j: entier;
-	somme := 0;
-	j := 0;
 
-	// Parcours du tableau à l'envers car un binaire se lit de droite à gauche
-	pour i de tab.nbBin à 1 faire
-		// ici on admet que atoi() converti un caractère en entier
-		somme := somme + atoi(tab.t_bin[i]) * 2^j; 
-		j++;
-	finFaire
-	
-	tab.resEnt := somme;
-fin
-
-procédure binToHexa(entF/sortF tab: s_tab) c'est
-début
-	nbChiffre: entier;
-
-	// calcul le nombre de chiffre hexadecimaux nécessaire
-	// nbChiffre = quotient du nombre de binaire par 4, si il y a un reste nbChiffre++
-	nbChiffre := (tab.nbBin - (tab.nbBin % 4)) / 4 
-	si ((tab.nbBin % 4) != 0) alors
-		nbChiffre++;
-	finSi
-
-	nbGrTour, nbPeTour, calc, i: entier;
-	nbGrTour := 1;
-	nbPeTour := 1;
-	j := tab.nbBin;
-
-	tantque (nbGrTour <= nbChiffre) faire
-		calc := 0;
-		i := 0;
-
-		// 1ere condition vérifie qu'on ne fait pas de somme en trop pour le dernier chiffre hexa calculé
-		tantque ((nbPeTour <= tab.nbBin) ET (i <= 3) ET (j >= 1)) faire
-			calc := calc + atoi(tab.t_bin[j]) * 2^i;
-			nbPeTour++;
-			i++;
-			j--;
-		finFaire
-
-		tab.t_hexa_calc[nbGrTour] := calc;
-		nbGrTour++;
-	finFaire
-
-	tab.nbHexa := nbGrTour - 1;
-	hexaCalc_To_HexaSaisi(entE tab);
-fin
-
-procédure entToBin(entF/sortF tab: s_tab) c'est
-début
-	dividende, diviseur, quotient, reste: entier;
-	tab.nbBin := 1;
-
-	dividende := tab.resEnt;
-	diviseur := 2;
-	reste := dividende % diviseur;
-	quotient := (dividende - reste) / diviseur;
-
-	tab.t_bin[tab.nbBin] := reste;
-
-	tantque (quotient != 0) faire
-		tab.nbBin++;
-		dividende := quotient;
-		reste := dividende % diviseur;
-		quotient := (dividende - reste) / diviseur;
-		tab.t_bin[tab.nbBin] := reste;
-	finFaire
-fin
-
-procédure entToHexa(entF/sortF tab: s_tab) c'est
-début
-	dividende, diviseur, quotient, reste: entier;
-	tab.nbHexa := 1;
-
-	dividende := tab.resEnt;
-	diviseur := 16;
-	reste := dividende % diviseur;
-	quotient := (dividende - reste) / diviseur;
-
-	tab.t_hexa_calc[tab.nbHexa] := reste;
-
-	tantque (quotient != 0) faire
-		tab.nbHexa++;
-		dividende := quotient;
-		reste := dividende % diviseur;
-		quotient := (dividende - reste) / diviseur;
-		tab.t_hexa_calc[tab.nbHexa] := reste;
-	finFaire
-
-	hexaCalc_To_HexaSaisi(entE tab);
-fin
-
-procédure hexaToEnt(entF/sortF tab: s_tab) c'est
-début
-	hexaSaisi_To_HexaCalc(entE tab);
-	somme, i, j: entier;
-	somme := 0;
-	j := 0;
-
-	pour i de tab.nbHexa à 1 faire
-		somme := somme + tab.t_hexa_calc[i] * 16^j; 
-	finFaire
-	
-	tab.resEnt := somme;
-fin
-
-procédure hexaToBin(entF/sortF tab: s_tab) c'est
-début
-	hexaSaisi_To_HexaCalc(entE tab);
-
-	i, dividende, diviseur, quotient, reste: entier;
-	diviseur := 2;
-
-	pour i de tab.nbHexa à 1 faire
-		dividende := tab.t_hexa_calc[i];
-		quotient := 1;
-
-		tant que ((quotient != 0) ET (tab.nbBin <= MAX_TAB_BIN)) faire
-			tab.nbBin++;
-			reste := dividende % diviseur;
-			quotient := (dividende - reste) / diviseur;
-			tab.t_bin[tab.nbBin] := reste;
-			dividende := quotient;
-		finFaire
-	finFaire
-fin
+// ------------------------------ CALCUL ------------------------------
 
 procédure hexaSaisi_To_HexaCalc(entF/sortF tab: s_tab) c'est
 début
 	i: entier;
-	e: ensemble;
-	e := {'0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F', 'a', 'b', 'c', 'd', 'e', 'f'};
-
+	
 	pour i de 1 à tab.nbHexa faire
-		tab.t_hexa[i] := e[tab.t_hexa_calc[i]];
+		tab.t_hexa[i] := ENSEMBLE_HEXA[tab.t_hexa_calc[i]];
 	finFaire
 fin
 
 procédure hexaCalc_To_HexaSaisi(entF/sortF tab: s_tab) c'est
 début
 	i: entier;
+
 	pour i de 1 à tab.nbHexa faire
 		si (tab.t_hexa[i]=='A' OU tab.t_hexa[i]=='a') alors
 			tab.t_hexa_calc[i] := 10;
@@ -157,7 +28,85 @@ début
 		sinon si (tab.t_hexa[i]=='F' OU tab.t_hexa[i]=='f') alors
 			tab.t_hexa_calc[i] := 15;
 		sinon
-			tab.t_hexa_calc[i] := atoi(tab.t_hexa[i]);
+			tab.t_hexa_calc[i] := charInt(entE tab.t_hexa[i]);
 		finSi
 	finFaire
+fin
+
+procédure entToBin(entF/sortF tab: s_tab) c'est
+début
+	i, dividende, diviseur, quotient, reste: entier;
+	i := 1;
+
+	dividende := tab.resEnt;
+	diviseur := 2;
+	reste := dividende % diviseur;
+	quotient := (dividende - reste) / diviseur;
+
+	tab.t_bin[i] := reste;
+
+	tantque (quotient > 0) faire
+		i++;
+		dividende := quotient;
+		reste := dividende % diviseur;
+		quotient := (dividende - reste) / diviseur;
+		tab.t_bin[i] := reste;
+	finFaire
+
+	tab.nbBin := i;
+fin
+
+procédure entToHexa(entF/sortF tab: s_tab) c'est
+début
+	i, dividende, diviseur, quotient, reste: entier;
+	i := 1;
+
+	dividende := tab.resEnt;
+	diviseur := 16;
+	reste := dividende % diviseur;
+	quotient := (dividende - reste) / diviseur;
+
+	tab.t_hexa_calc[i] := reste;
+
+	tantque (quotient != 0) faire
+		i++;
+		dividende := quotient;
+		reste := dividende % diviseur;
+		quotient := (dividende - reste) / diviseur;
+		tab.t_hexa_calc[i] := reste;
+	finFaire
+
+	tab.nbHexa := i;
+
+	hexaCalc_To_HexaSaisi(entE/sortE tab);
+fin
+
+procédure binToEnt(entF/sortF tab : s_tab) c'est
+début
+	somme, i, j: entier;
+	somme := 0;
+	j := 0;
+
+	// Parcours du tableau à l'envers car un binaire se lit de droite à gauche
+	pour i de tab.nbBin à 1 faire
+		somme := somme + (tab.t_bin[i] * 2^j); 
+		j++;
+	finFaire
+	
+	tab.resEnt := somme;
+fin
+
+procédure hexaToEnt(entF/sortF tab: s_tab) c'est
+début
+	hexaSaisi_To_HexaCalc(entE/sortE tab);
+
+	somme, i, j: entier;
+	somme := 0;
+	j := 0;
+
+	pour i de tab.nbHexa à 1 faire
+		somme := somme + (tab.t_hexa_calc[i] * 16^j); 
+	finFaire
+	
+	tab.resEnt := somme;
 fin

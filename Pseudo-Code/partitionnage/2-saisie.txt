@@ -1,3 +1,14 @@
+
+// ------------------------------ SAISIE ------------------------------
+
+fonction charInt(entF c: caractère) délivre entier c'est
+début
+	charInt: entier;
+	charInt := c - '0';
+
+	retourne charInt;
+fin
+
 procédure initTab(sortF tab: s_tab) c'est
 début
 	tab.nbBin := 0;
@@ -5,67 +16,127 @@ début
 
 	tab.nbHexa := 0;
 	tab.saisiHexa := FAUX;
-
-	tab.nbEnt := 0;
-fin
-
-procédure saisiBin(entF/sortF tab: s_tab) c'est
-début
-	tab.saisiBin := VRAI;
-	saisi: caractere;
-
-	lireClavier(saisi);
-
-	// Vérifie que le premier caractère vaut 0 ou 1 sinon Erreur
-	répéter
-		ecrireEcran("Erreur: un nombre binaire est constitué exclusivement de 0 et de 1.");
-		ecrireEcran("Entrer un nombre binaire :");
-		lireClavier(saisi);
-	jusqu'à ((saisi=='0') OU (saisi=='1'))
-
-	tab.nbBin++;
-
-	tantque ((tab.nbBin <= MAX_SAISI_BIN) ET ((saisi=='0') OU (saisi=='1'))) faire
-		tab.t_bin[tab.nbBin] := saisi;
-		tab.nbBin++;
-		lireClavier(saisi);
-	finFaire
 fin
 
 procédure saisiEnt(entF/sortF tab: s_tab) c'est
 début
+	ecrireEcran("Entrer le nombre entier : ");
 	lireClavier(tab.resEnt);
 
 	si (tab.resEnt < 0) alors
-			ecrireEcran("ERREUR: Vous avez saisi un entier négatif.");
-			ecrireEcran("Saisissez un entier positif : ");
-			saisiEnt(entE/sortE tab);
+		ecrireEcran("ERREUR: Vous avez saisi un entier négatif.");
+		ecrireEcran("Saisissez un entier positif : ");
+		saisiEnt(entE/sortE tab);
 
 	sinon si (tab.resEnt > MAX_ENT) alors
 		tab.resEnt := MAX_ENT;
 	finSi
 fin
 
-procédure saisiHexa(entF/sortF tab: s_tab) c'est
+procédure saisiBin(entF/sortF tab: s_tab) c'est
 début
-	tab.saisiHexa := VRAI;
-	saisi: caractere;
-	e: ensemble;
-	e := {'0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F', 'a', 'b', 'c', 'd', 'e', 'f'};
 
+// ----- PARTIE SAISI -----
+
+	tab.saisiBin := VRAI;
+	saisi: chaine(MAX_TAB_BIN);
+
+	ecrireEcran("Entrer le nombre binaire : ");
 	lireClavier(saisi);
 
-	répéter
-		ecrireEcran("Erreur: un nombre hexadécimal est constitué de chiffre et/ou des lettres A à F.");
-		ecrireEcran("Entrer un nombre hexadécimal :");
-		lireClavier(saisi);
-	jusqu'à (saisi dans e)
-
-	tab.nbHexa++;
-
-	tantque ((tab.nbHexa <= MAX_SAISI_HEXA) ET (saisi dans e)) faire
-		tab.t_hexa[tab.nbHexa] := saisi;
-		tab.nbHexa++;
+	// Vérifie que la chaine n'est pas trop grande
+	tantque (taille(saisi) > MAX_TAB_BIN) faire
+	début
+		ecrireEcran("Erreur, votre nombre binaire ne peut pas dépasser les 20 chiffres. \nRecommencez : ");
 		lireClavier(saisi);
 	finFaire
+
+	// Vérifie que le premier caractère vaut 0 ou 1 sinon Erreur
+	tanque ((saisi(0) != '0') ET (saisi(0) != '1')) faire
+	début
+		ecrireEcran("Erreur: un nombre binaire est constitué exclusivement de 0 et de 1.");
+		ecrireEcran("Entrer un nombre binaire :");
+		lireClavier(saisi);
+
+		tantque (taille(saisi) > MAX_TAB_BIN) faire
+		début
+			ecrireEcran("Erreur, votre nombre binaire ne peut pas dépasser les 20 chiffres. \nRecommencez : ");
+			lireClavier(saisi);
+		finFaire
+	finFaire
+
+// ----- PARTIE CONVERTION -----
+
+	i: entier;
+	i := 0;
+
+	tantque ((i <= MAX_SAISI_BIN) ET ((saisi(i)=='0') OU (saisi(i)=='1'))) faire
+		tab.t_bin[i] := charInt(entE saisi(i));
+		i++;
+	finFaire
+
+	tab.nbBin := i;
+fin
+
+// Retourne true si saisi se trouve dans l'ensemble hexadecimal, false sinon.
+fonction estHexa(entF saisi: caractère) délivre booléen c'est
+début
+	trouve: booléen;
+	trouve := FAUX;
+
+	i: entier;
+	i := 0;
+
+	tantque ((i < MAX_ENSEMBLE_HEXA) && (trouve == FAUX)) faire
+		si (saisi - ENSEMBLE_HEXA[i] == 0) alors
+			trouve := VRAI;
+		finSi
+		i++;
+	finFaire
+
+	retourne trouve;
+fin
+
+procédure saisiHexa(entF/sortF tab: s_tab) c'est
+début
+
+// ----- PARTIE SAISI -----
+
+	tab.saisiHexa := VRAI;
+	saisi: chaine(MAX_TAB_HEXA);
+
+	ecrireEcran("Entrer le nombre héxadecimal : ");
+	lireClavier(saisi);
+
+	//Vérifie que la chaine saisie n'est pas trop grande.
+	tantque (taille(saisi) > MAX_TAB_HEXA) faire
+		ecrireEcran("Erreur, votre nombre hexadécimal ne peut pas dépasser les 5 chiffres.");
+		ecrireEcran("Entrer un nombre hexadécimal :");
+		lireClavier(saisi);
+	finFaire
+
+	//Vérifie que le premier caractère est dans l'ensemble hexadécimal si non ressaisir.
+	tantque (estHexa(entE saisi(0) == FAUX) faire
+		ecrireEcran("Erreur, un nombre hexadécimal est constitué de chiffre et/ou des lettres A à F.\n");
+        	ecrireEcran("Entrer un nombre hexadécimal : ");
+		lireClavier(saisi);
+
+		tantque (taille(saisi) > MAX_TAB_HEXA) faire
+			ecrireEcran("Erreur, votre nombre hexadécimal ne peut pas dépasser les 5 chiffres.");
+			ecrireEcran("Entrer un nombre hexadécimal :");
+			lireClavier(saisi);
+		finFaire
+	finFaire
+
+// ----- PARTIE CONVERTION -----
+
+	i: entier;
+	i := 0;
+
+	tantque ((i < MAX_TAB_HEXA) && (estHexa(entE saisi(i) == true)) faire
+		tab.t_hexa[i] := saisi(i);
+		i++;
+	finFaire
+
+	tab.nbHexa := i;
 fin

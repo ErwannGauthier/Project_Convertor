@@ -1,9 +1,14 @@
+
+// ------------------------------ MAIN ------------------------------
+
 programme main c'est
 début 
 	resSwitch: entier;
-	continue: booléen;
 
+	continue: booléen;
 	continue := VRAI;
+
+	tab: s_tab;
 	
 	tantque (continue != FAUX) faire
 
@@ -13,22 +18,22 @@ début
 		lireClavier(resSwitch);
 
 		selon resSwitch faire
-			cas 1:	ecrireEcran("Entrer le chiffre décimal :");
+			cas 1:
 				saisiEnt(entE/sortE tab);
 				entToBin(entE/sortE tab);
 				entToHexa(entE/sortE tab);
 				affichRes(entE tab);
 
-			cas 2:	ecrireEcran("Entrer le chiffre binaire :");
+			cas 2:
 				saisiBin(entE/sortE tab);
 				binToEnt(entE/sortE tab);
-				binToHexa(entE/sortE tab);
+				entToHexa(entE/sortE tab);
 				affichRes(entE tab);
 
-			cas 3:	ecrireEcran("Entrer le chiffre hexadécimal :");
+			cas 3:
 				saisiHexa(entE/sortE tab);
 				hexaToEnt(entE/sortE tab);
-				hexaToBin(entE/sortE tab);
+				entToBin(entE/sortE tab);
 				affichRes(entE tab);
 
 			cas 4:	ecrireEcran("Aurevoir.");

@@ -1,16 +1,19 @@
+
+// ------------------------------ CONSTANTES ET STRUCTURES ------------------------------
+
 // Affichage
-constante entier MAX_CHAR_AFFICH := 53;
-constante chaine(MAX_CHAR_AFFICH) TETE := "+--------------------------------------------------+";
-constante chaine(MAX_CHAR_AFFICH) ESPACE := "|                                                  |";
+constante chaine() TETE := "+-----------------------------------------------+";
+constante chaine() ESPACE := "|\t\t\t\t\t\t|";
 
 // Saisi-Calcul
 // Chiffre max : 1 048 575, (FFFFF)16, (11111111111111111111)2
 
 constante entier MAX_ENT := 1 048 575;
-constante entier MAX_TAB_BIN := 20; // car tableau en pseudo-code : 1..MAX, alors qu'en C : 0..MAX-1
-constante entier MAX_TAB_HEXA := 5;
 
-type tabBin = tableau[1..MAX_TAB_BIN] de caractere;
+constante entier MAX_TAB_BIN := 20; // car tableau en pseudo-code : 1..MAX, alors qu'en C : 0..MAX-1
+type tabBin = tableau[1..MAX_TAB_BIN] d'entier;
+
+constante entier MAX_TAB_HEXA := 5;
 type tabHexa = tableau[1..MAX_TAB_HEXA] de caractere;
 type tabHexaCalc = tableau[1..MAX_TAB_HEXA] de entier;
 
@@ -27,3 +30,7 @@ début
 	nbHexa: entier;
 	saisiHexa: booléen;
 fin
+
+// Ensemble des valeurs hexadécimales possibles
+constante entier MAX_ENSEMBLE_HEXA := 22
+constante caractere ENSEMBLE_HEXA[1..MAX_ENSEMBLE_HEXA] = {'0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F', 'a', 'b', 'c', 'd', 'e', 'f'};

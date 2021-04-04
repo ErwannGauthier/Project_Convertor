@@ -1,14 +1,15 @@
+
+// ------------------------------ AFFICHAGE ------------------------------
+
 procédure affichMenu() c'est
 début
 	ecrireEcran(TETE);
 	ecrireEcran(ESPACE);
-	ecrireEcran(ESPACE);
-	ecrireEcran("|	De quel type est votre chiffre ?                |");
-	ecrireEcran("|		1 : Entier                              |");
-	ecrireEcran("|		2 : Binaire                             |");
-	ecrireEcran("|          3 : Hexadecimal                         |");
-	ecrireEcran("|          4 : Quitter                             |");
-	ecrireEcran(ESPACE);
+	ecrireEcran("| De quel type est votre chiffre ?\t\t|");
+	ecrireEcran("|\t 1 : Entier\t\t\t\t|");
+	ecrireEcran("|\t 2 : Binaire\t\t\t\t|");
+	ecrireEcran("|\t 3 : Hexadecimal\t\t\t|");
+	ecrireEcran("|\t 4 : Quitter\t\t\t\t|");
 	ecrireEcran(ESPACE);
 	ecrireEcran(TETE);
 fin
@@ -47,7 +48,6 @@ procédure affichRes(entF tab: s_tab) c'est
 début
 	ecrireEcran(TETE);
 	ecrireEcran(ESPACE);
-	ecrireEcran(ESPACE);
 	ecrireEcran("|	Entier :", tab.resEnt);
 	ecrireEcran(ESPACE);
 	ecrireEcran("|	Binaire :");
@@ -55,7 +55,6 @@ début
 	ecrireEcran(ESPACE);
 	ecrireEcran("|	Hexadécimal :");
 	affichHexa(entE tab);
-	ecrireEcran(ESPACE);
 	ecrireEcran(ESPACE);
 	ecrireEcran(TETE);
 fin
