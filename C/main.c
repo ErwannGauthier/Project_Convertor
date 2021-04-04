@@ -293,7 +293,7 @@ void binToEnt(s_tab *tab)
 
     for (i = ((*tab).nbBin - 1); i >= 0; i--)
     {
-        somme = somme + ((*tab).t_bin[i] * pow(2, j));
+        somme = somme + ((*tab).t_bin[i] * (int)pow(2, j));
         j++;
     }
 
@@ -387,7 +387,7 @@ void affichRes(s_tab *tab)
     printf("%s\n", TETE);
 }
 
-// ------------------------------ AFFICHAGE ------------------------------
+// ------------------------------ MAIN ------------------------------
 
 int main()
 {
@@ -402,36 +402,37 @@ int main()
 
         affichMenu();
         scanf("%d", &resSwitch);
+
         switch (resSwitch)
         {
-        case 1:
-            saisiEnt(&tableaux);
-            entToBin(&tableaux);
-            entToHexa(&tableaux);
-            affichRes(&tableaux);
-            break;
+            case 1:
+                saisiEnt(&tableaux);
+                entToBin(&tableaux);
+                entToHexa(&tableaux);
+                affichRes(&tableaux);
+                break;
 
-        case 2:
-            saisiBin(&tableaux);
-            binToEnt(&tableaux);
-            entToHexa(&tableaux);
-            affichRes(&tableaux);
-            break;
+            case 2:
+                saisiBin(&tableaux);
+                binToEnt(&tableaux);
+                entToHexa(&tableaux);
+                affichRes(&tableaux);
+                break;
 
-        case 3:
-            saisiHexa(&tableaux);
-            hexaToEnt(&tableaux);
-            entToBin(&tableaux);
-            affichRes(&tableaux);
-            break;
+            case 3:
+                saisiHexa(&tableaux);
+                hexaToEnt(&tableaux);
+                entToBin(&tableaux);
+                affichRes(&tableaux);
+                break;
 
-        case 4:
-            printf("Aurevoir.\n");
-            continuer = false;
-            break;
+            case 4:
+                printf("Aurevoir.\n");
+                continuer = false;
+                break;
 
-        default:
-            printf("Erreur: Veuillez rentrer 1, 2, 3 ou 4.\n");
+            default:
+                printf("Erreur: Veuillez rentrer 1, 2, 3 ou 4.\n");
         }
     }
 
