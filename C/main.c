@@ -37,7 +37,7 @@ typedef struct
     bool saisiHexa;
 } s_tab;
 
-// Ensemble des valeurs hexadécimales possibles
+// Ensemble des valeurs hexadÃ©cimales possibles
 #define MAX_ENSEMBLE_HEXA 22
 const char ENSEMBLE_HEXA[MAX_ENSEMBLE_HEXA] = {'0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F', 'a', 'b', 'c', 'd', 'e', 'f'};
 
@@ -68,7 +68,7 @@ void saisiEnt(s_tab *tab)
 
     if ((*tab).resEnt < 0)
     {
-        printf("Veuillez entrer un entier positif : ");
+        printf("Veuillez entrer un entier positif ! \n");
         saisiEnt(&(*tab));
     }
     else if ((*tab).resEnt > MAX_ENT)
@@ -86,23 +86,23 @@ void saisiBin(s_tab *tab)
     printf("Entrer le nombre binaire : ");
     scanf("%s", saisi);
 
-    //Vérifie que la chaine saisie n'est pas trop grande.
+    //VÃ©rifie que la chaine saisie n'est pas trop grande.
     while(strlen(saisi) > MAX_TAB_BIN)
     {
-        printf("Erreur, votre nombre binaire ne peut pas dépasser les 20 chiffres. Recommencez :\n");
+        printf("Erreur, votre nombre binaire ne peut pas dÃ©passer les 20 chiffres. \nRecommencez : ");
         scanf("%s", saisi);
     }
 
-    //Vérifie que le premier caractère est égale à '0' ou '1' si non ressaisir.
+    //VÃ©rifie que le premier caractÃ¨re est Ã©gale Ã  '0' ou '1' si non ressaisir.
     while((saisi[0] != '0') && (saisi[0] != '1'))
     {
-        printf("Erreur: un nombre binaire est constitué exclusivement de 0 et de 1.");
-		printf("Entrer un nombre binaire :");
+        printf("Erreur, un nombre binaire est constituÃ© exclusivement de 0 et de 1.\n");
+		printf("Entrer un nombre binaire : ");
 		scanf("%s", saisi);
 
 		while(strlen(saisi) > MAX_TAB_BIN)
         {
-            printf("Erreur, votre nombre binaire ne peut pas dépasser les 20 chiffres. Recommencez :\n");
+            printf("Erreur, votre nombre binaire ne peut pas dÃ©passer les 20 chiffres. \nRecommencez : ");
             scanf("%s", saisi);
         }
     }
@@ -147,24 +147,24 @@ void saisiHexa(s_tab *tab)
     printf("Entrer le nombre hexadecimal : ");
     scanf("%s", saisi);
 
-    //Vérifie que la chaine saisie n'est pas trop grande.
+    //VÃ©rifie que la chaine saisie n'est pas trop grande.
     while(strlen(saisi) > MAX_TAB_HEXA)
     {
-        printf("Erreur, votre nombre hexadécimal ne peut pas dépasser les 5 chiffres. Recommencez :\n");
+        printf("Erreur, votre nombre hexadÃ©cimal ne peut pas dÃ©passer les 5 chiffres. Recommencez :\n");
         scanf("%s", saisi);
     }
 
-    //Vérifie que le premier caractère est dans l'ensemble hexadécimal si non ressaisir.
+    //VÃ©rifie que le premier caractÃ¨re est dans l'ensemble hexadÃ©cimal si non ressaisir.
     while(estHexa(saisi[0]) == false)
     {
-        printf("Erreur: un nombre hexadécimal est constitué de chiffre et/ou des lettres A à F.\n");
-		printf("Entrer un nombre hexadécimal : ");
+        printf("Erreur: un nombre hexadÃ©cimal est constituÃ© de chiffre et/ou des lettres A Ã  F.\n");
+		printf("Entrer un nombre hexadÃ©cimal : ");
 		scanf("%s", saisi);
 
-		//Vérifie que la chaine saisie n'est pas trop grande.
+		//VÃ©rifie que la chaine saisie n'est pas trop grande.
         while(strlen(saisi) > MAX_TAB_HEXA)
         {
-            printf("Erreur, votre nombre hexadéciaml ne peut pas dépasser les 5 chiffres. Recommencez :\n");
+            printf("Erreur, votre nombre hexadÃ©ciaml ne peut pas dÃ©passer les 5 chiffres. Recommencez :\n");
             scanf("%s", saisi);
         }
     }
@@ -272,7 +272,7 @@ void entToHexa(s_tab *tab)
     quotient = (dividende - reste) / diviseur;
     (*tab).t_hexa_calc[i] = reste;
 
-    while(quotient != 0)
+    while(quotient > 0)
     {
         i++;
         dividende = quotient;
@@ -389,6 +389,7 @@ void affichRes(s_tab *tab)
 }
 
 
+// ------------------------------ AFFICHAGE ------------------------------
 
 int main()
 {
@@ -430,5 +431,6 @@ int main()
             default:    printf("Erreur: Veuillez rentrer 1, 2, 3 ou 4.\n");
         }
     }
-}
 
+    return 0;
+}
