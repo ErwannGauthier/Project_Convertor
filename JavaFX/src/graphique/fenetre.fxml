@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane prefHeight="425.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="graphique.FenetreController">
+    <children>
+        <Button fx:id="boutonConvertir" layoutX="325.0" layoutY="350.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="150.0" text="DÉTAILS" />
+        <Label layoutX="100.0" layoutY="75.0" prefHeight="25.0" prefWidth="400.0" text="Entier :" />
+        <TextField fx:id="textField_Entier" layoutX="100.0" layoutY="100.0" prefHeight="25.0" prefWidth="400.0" promptText="Entier - Uniquement des chiffres" />
+        <TextField fx:id="textField_Hexa" layoutX="100.0" layoutY="250.0" prefHeight="25.0" prefWidth="400.0" promptText="Hexadécimal - Uniquement des chiffres et des lettres de A à F" />
+        <TextField fx:id="textField_Binaire" layoutX="100.0" layoutY="175.0" prefHeight="25.0" prefWidth="400.0" promptText="Binaire - Uniquement des 0 et des 1" />
+        <Label layoutX="100.0" layoutY="225.0" prefHeight="25.0" prefWidth="400.0" text="Hexadécimal :" />
+        <Label layoutX="100.0" layoutY="150.0" prefHeight="25.0" prefWidth="400.0" text="Binaire :" />
+        <Button fx:id="boutonReinitialiser" layoutX="125.0" layoutY="350.0" mnemonicParsing="false" onAction="#resetTextField" prefHeight="25.0" prefWidth="150.0" text="RÉINITIALISER" />
+        <Label alignment="CENTER" contentDisplay="CENTER" layoutX="100.0" layoutY="25.0" prefHeight="25.0" prefWidth="400.0" text="CONVERTOR.IO" textAlignment="CENTER" />
+        <Label alignment="CENTER" layoutX="400.0" layoutY="400.0" prefHeight="20.0" prefWidth="100.0" text="Développé par" />
+      <Label fx:id="labelErreur" alignment="CENTER" contentDisplay="CENTER" layoutX="100.0" layoutY="290.0" prefHeight="50.0" prefWidth="400.0" textAlignment="CENTER" textFill="RED" />
+      <Hyperlink fx:id="lien" contentDisplay="CENTER" layoutX="490.0" layoutY="398.0" onAction="#lienGitHub" prefHeight="20.0" prefWidth="105.0" text="\@ErwannGauthier" textAlignment="CENTER" />
+    </children>
+</AnchorPane>
