@@ -10,7 +10,7 @@ Ce projet personnel est un convertisseur Entier - Binaire - Hexadécimal dévelo
 >
 >Reste à faire :
 >- Fenêtre détails des calculs
->- CSS
+>- [CSS](https://www.figma.com/file/etyVnqLL2l4kl56LSGNwsc/Convertor.io?node-id=0%3A1)
 >- Traduction en anglais
 
 ### **Langages utilisés :**
@@ -21,7 +21,7 @@ Ce projet personnel est un convertisseur Entier - Binaire - Hexadécimal dévelo
 
 ### **Prérequis :**
 
->- Java : Version 15.0.2
+>- Java : [Version 15.0.2 ou +](https://www.oracle.com/java/technologies/javase/jdk15-archive-downloads.html)
 
 
 ### **Exécution :**
